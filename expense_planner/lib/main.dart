@@ -14,7 +14,8 @@ class MyApp extends StatelessWidget {
       title: 'Personal Expenses',
       theme: ThemeData(
         textTheme:ThemeData.light().textTheme.copyWith(
-          title: TextStyle(fontFamily: 'OpenSans',fontWeight: FontWeight.bold,fontSize: 18)
+          title: TextStyle(fontFamily: 'OpenSans',fontWeight: FontWeight.bold,fontSize: 18),
+          button: TextStyle(color: Colors.white),
         ) ,
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
@@ -107,7 +108,6 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Chart(_recentTransactions),
-            
             TransactionList(_userTransactions),
             
           ],

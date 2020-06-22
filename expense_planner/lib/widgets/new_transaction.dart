@@ -14,6 +14,10 @@ class _NewTransactionState extends State<NewTransaction> {
 
   final amountController = TextEditingController();
 
+  void presentDatePicker(){
+    showDatePicker(context: context, initialDate: DateTime.now(), firstDate: null, lastDate: null);
+  }
+
 
   void submitData() {
     final enteredTitle = titleController.text;
@@ -22,7 +26,6 @@ class _NewTransactionState extends State<NewTransaction> {
     if(enteredTitle == null || enteredAmount <= 0 || enteredAmount == null ){
       return;
     }
-
 
     widget.addTx(
       enteredTitle,
@@ -52,11 +55,28 @@ class _NewTransactionState extends State<NewTransaction> {
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               onSubmitted:(_) => submitData()
             ),
-            FlatButton(
+            Container(
+              height: 70,
+              child: Row(
+                children: <Widget>[
+                  Text("No Date Chosen!"),
+                  FlatButton(
+                    textColor: Theme.of(context).primaryColor,
+                    onPressed: (){}, 
+                    child: Text("Choose date",style: TextStyle(
+                      fontWeight: FontWeight.bold
+                    ),)
+                  )
+                ],
+              ),
+            ),
+            RaisedButton(
+              color: Theme.of(context).primaryColor,
               child: Text('Add Transaction'),
-              textColor: Colors.purple,
+              textColor: Theme.of(context).textTheme.button.color,
               onPressed:submitData
             ),
+            
           ],
         ),
       ),
