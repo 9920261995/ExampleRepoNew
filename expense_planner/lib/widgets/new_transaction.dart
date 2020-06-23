@@ -15,7 +15,7 @@ class _NewTransactionState extends State<NewTransaction> {
   final amountController = TextEditingController();
 
   void presentDatePicker(){
-    showDatePicker(context: context, initialDate: DateTime.now(), firstDate: null, lastDate: null);
+    showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2019), lastDate: DateTime.now());
   }
 
 
@@ -62,7 +62,7 @@ class _NewTransactionState extends State<NewTransaction> {
                   Text("No Date Chosen!"),
                   FlatButton(
                     textColor: Theme.of(context).primaryColor,
-                    onPressed: (){}, 
+                    onPressed: presentDatePicker, 
                     child: Text("Choose date",style: TextStyle(
                       fontWeight: FontWeight.bold
                     ),)
