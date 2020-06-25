@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTx;
@@ -11,25 +12,44 @@ class NewTransaction extends StatefulWidget {
 
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
-
   final amountController = TextEditingController();
-
+  DateTime date ;
   void presentDatePicker(){
-    showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2019), lastDate: DateTime.now());
+    showDatePicker(
+      context: context, 
+      initialDate: DateTime.now(), 
+      firstDate: DateTime(2020), 
+      lastDate:DateTime.now()
+    ).then((pickedDate){
+      if(pickedDate == null){
+        return;
+      }
+      else{
+        setState(() {
+           date = pickedDate;
+        });
+         
+      }
+    }).catchError((){});
   }
 
 
   void submitData() {
+    if (amountController.text.isEmpty){
+      return;
+    }
     final enteredTitle = titleController.text;
     final enteredAmount = double.parse(amountController.text);
 
-    if(enteredTitle == null || enteredAmount <= 0 || enteredAmount == null ){
+    if(enteredTitle == null || enteredAmount <= 0 || enteredAmount == null || date == null){
       return;
     }
 
     widget.addTx(
+
       enteredTitle,
-      enteredAmount
+      enteredAmount,
+      date,
     );
     Navigator.of(context).pop();
   }
@@ -59,7 +79,9 @@ class _NewTransactionState extends State<NewTransaction> {
               height: 70,
               child: Row(
                 children: <Widget>[
-                  Text("No Date Chosen!"),
+                  Expanded(child: 
+                    Text(date!=null ? "Picked Date : ${DateFormat.yMd().format(date)}": "No Date Chosen!")
+                  ),
                   FlatButton(
                     textColor: Theme.of(context).primaryColor,
                     onPressed: presentDatePicker, 
