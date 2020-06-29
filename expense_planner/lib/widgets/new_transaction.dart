@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/widgets/adaptive_flatbutton.dart';
 import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
@@ -13,40 +17,39 @@ class NewTransaction extends StatefulWidget {
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
-  DateTime date ;
-  void presentDatePicker(){
+  DateTime date;
+  void presentDatePicker() {
     showDatePicker(
-      context: context, 
-      initialDate: DateTime.now(), 
-      firstDate: DateTime(2020), 
-      lastDate:DateTime.now()
-    ).then((pickedDate){
-      if(pickedDate == null){
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2020),
+            lastDate: DateTime.now())
+        .then((pickedDate) {
+      if (pickedDate == null) {
         return;
-      }
-      else{
+      } else {
         setState(() {
-           date = pickedDate;
+          date = pickedDate;
         });
-         
       }
-    }).catchError((){});
+    }).catchError(() {});
   }
 
-
   void submitData() {
-    if (amountController.text.isEmpty){
+    if (amountController.text.isEmpty) {
       return;
     }
     final enteredTitle = titleController.text;
     final enteredAmount = double.parse(amountController.text);
 
-    if(enteredTitle == null || enteredAmount <= 0 || enteredAmount == null || date == null){
+    if (enteredTitle == null ||
+        enteredAmount <= 0 ||
+        enteredAmount == null ||
+        date == null) {
       return;
     }
 
     widget.addTx(
-
       enteredTitle,
       enteredAmount,
       date,
@@ -57,49 +60,44 @@ class _NewTransactionState extends State<NewTransaction> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        child: Card(
+      child: Card(
         elevation: 5,
         child: Container(
-          padding: EdgeInsets.only(left:10 ,top: 10,right: 10 ,bottom: MediaQuery.of(context).viewInsets.bottom+10),
+          padding: EdgeInsets.only(
+              left: 10,
+              top: 10,
+              right: 10,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
+              CupertinoTextField(),
               TextField(
-                decoration: InputDecoration(labelText: 'Title'),
-                controller: titleController,
-                onSubmitted:(_) => submitData()
-               
-              ),
+                  decoration: InputDecoration(labelText: 'Title'),
+                  controller: titleController,
+                  onSubmitted: (_) => submitData()),
               TextField(
-                decoration: InputDecoration(labelText: 'Amount'),
-                controller: amountController,
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                onSubmitted:(_) => submitData()
-              ),
+                  decoration: InputDecoration(labelText: 'Amount'),
+                  controller: amountController,
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  onSubmitted: (_) => submitData()),
               Container(
                 height: 70,
                 child: Row(
                   children: <Widget>[
-                    Expanded(child: 
-                      Text(date!=null ? "Picked Date : ${DateFormat.yMd().format(date)}": "No Date Chosen!")
-                    ),
-                    FlatButton(
-                      textColor: Theme.of(context).primaryColor,
-                      onPressed: presentDatePicker, 
-                      child: Text("Choose date",style: TextStyle(
-                        fontWeight: FontWeight.bold
-                      ),)
-                    )
+                    Expanded(
+                        child: Text(date != null
+                            ? "Picked Date : ${DateFormat.yMd().format(date)}"
+                            : "No Date Chosen!")),
+                    AdaptiveFlatButton(presentDatePicker)
                   ],
                 ),
               ),
               RaisedButton(
-                color: Theme.of(context).primaryColor,
-                child: Text('Add Transaction'),
-                textColor: Theme.of(context).textTheme.button.color,
-                onPressed:submitData
-              ),
-              
+                  color: Theme.of(context).primaryColor,
+                  child: Text('Add Transaction'),
+                  textColor: Theme.of(context).textTheme.button.color,
+                  onPressed: submitData),
             ],
           ),
         ),
